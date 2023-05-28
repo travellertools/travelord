@@ -1,6 +1,6 @@
 {
     "name": "travelord",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "CLI tool and typescript library for ranking points of interest along a path of travel",
     "keywords": [
         "coordinate",
@@ -30,8 +30,13 @@
         "start": "node dist/cli.js",
         "test": "jest",
         "test:ci": "jest --silent --ci --coverage --testLocationInResults --json --outputFile=\"coverage.json\"",
-        "lint": "npx eslint --fix-dry-run src && npx prettier --check --ignore-unknown src",
-        "prepare": "husky install"
+        "lint": "npx eslint --fix-dry-run src",
+        "format": "npx prettier --write --ignore-unknown src",
+        "prepare": "husky install",
+        "prepublishOnly": "npm build && npm test && npm run lint",
+        "preversion": "npm run lint",
+        "version": "npm run format && git add -A src",
+        "postversion": "git push && git push --tags"
     },
     "jest": {
         "testEnvironment": "node",

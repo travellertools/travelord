@@ -50,6 +50,10 @@ jobs:
       - name: Lint Code
         run: pnpm run lint
 
+
+      - name: Format Code
+        run: pnpm run format
+
       - name: Build
         run: pnpm run build
 
@@ -63,4 +67,4 @@ jobs:
           threshold: 80
           coverage-file: coverage.json
           base-coverage-file: coverage.json
-          skip-step: all
+          skip-step: alls
