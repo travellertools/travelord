@@ -71,8 +71,8 @@ Contributions are welcome! Please feel free to submit a PR or message me if you 
 
 ## Possible improvements
 
+-   fix lint precommit hook
 -   implement automated tagged releases and publish to npm
--   add support for coverage reports
 
 -   use a dictionary of coordinates and/or google api to accept city names instead of coordinates
 -   improve the ranking algorithm or give it more options
