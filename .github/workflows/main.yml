@@ -61,5 +61,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           threshold: 80
-          coverage-file: ./coverage.json
+          coverage-file: coverage.json
+          base-coverage-file: coverage.json
           skip-step: all
