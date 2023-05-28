@@ -14,11 +14,7 @@ This library is almost entirely written using ChatGPT. including this README!
 
 ## Why?
 
-I wanted to plan my travel by train across europe, hitting up as many slacklining/highlining communities along the way using data from SlackMap:
-
--   https://slackmap.com/communities
-
-Many of the the communities in the dataset are actually inactive, and I needed to check each one then leave a message if its been active recently.
+I wanted to plan my travel by train across europe, hitting up as many slacklining/highlining communities along the way using data from SlackMap: https://slackmap.com/communities
 
 This tool is useful for anyone who needs to plan a route given a list of POIs that they would like to visit along the way.
 
@@ -30,7 +26,7 @@ This library is super simple, all the functions contain JSDoc comments and are w
 
 To install Travelord, use pnpm, npm or yarn:
 
-`pnpm install travelord`
+`npm install travelord`
 
 ## CLI Usage
 
@@ -42,6 +38,8 @@ CLI Options
     --end: The end coordinate in the format lat,lng.
     --input: The input JSON file containing the array of points.
     --output: The output JSON file to save the sorted points (specify the input file to overwrite). If not provided, the output goes to STDOUT.
+
+Use `travelord --help` to get a full description
 
 ## Library Usage
 
@@ -69,7 +67,7 @@ console.log(rankedPoints);
 
 ## Contributing
 
-Contributions are welcome! Please refer to the Contributing Guidelines for more information.
+Contributions are welcome! Please feel free to submit a PR or message me if you need help
 
 ## Possible improvements
 
