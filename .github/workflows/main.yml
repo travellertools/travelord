@@ -7,7 +7,7 @@ permissions:
 
 jobs:
   lint-test-build:
-    name: Test on node ${{ matrix.node-version }} and ${{ matrix.os }}
+ss    name: Test on node ${{ matrix.node-version }} and ${{ matrix.os }}
     runs-on: { matrix.os } 
 
     strategy:
@@ -17,15 +17,14 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
+      - name: Checkouts
+        uses: actions/checkout@v3
 
-    - name: Checkouts
-      uses: actions/checkout@v3
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        cache: 'npm'
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+          node-version: ${{ matrix.node-version }}
 
       - name: Install Dependencies
         run: npm ci
