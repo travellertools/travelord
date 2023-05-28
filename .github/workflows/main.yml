@@ -1,11 +1,14 @@
 name: Main
 
 on:
-  pull_request:
   push:
-    branches:
-      - main
-      - 'v*'
+    branches: [main]
+  pull_request:
+    branches: ['*']
+permissions:
+      checks: write
+      pull-requests: write
+      contents: write
 jobs:
   lint-test-build:
     name: Lint, Build, Test and Coverage Report
