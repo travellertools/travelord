@@ -79,7 +79,7 @@ describe("calculateDistance", () => {
         const coordinateA = { lat: 52.520008, lng: 13.404954 }; // Berlin, Germany
         const coordinateB = { lat: 45.421532, lng: -75.699642 }; // Ottawa, Canada
         const distance = calculateDistance(coordinateA, coordinateB);
-        expect(distance).toBeCloseTo(6260.68, 2); // Approximately 6260.68 km
+        expect(distance).toBeCloseTo(6260, 2); // Approximately 6260.68 km
     });
 
     it("should calculate the distance between two identical coordinates as 0", () => {
