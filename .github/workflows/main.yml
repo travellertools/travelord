@@ -10,7 +10,7 @@ permissions:
   contents: read
 jobs:
   lint-test-build:
-    name: Test on node ${{ matrix.node-version }} and ${{ matrix.os }}
+    name: Lint, Build, Test and Coverage Report
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -53,7 +53,11 @@ jobs:
         run: pnpm run build
 
       - name: Run Tests
-        run: pnpm test
+        run: pnpm run test:ci
       
       - name: Coverage Report
         uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          github-token: \${{ secrets.GITHUB_TOKEN }}
+          threshold: 80
+          skip-step: all

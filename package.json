@@ -25,6 +25,7 @@
         "build": "tsc",
         "start": "node dist/cli.js",
         "test": "jest",
+        "test:ci": "jest --silent --ci --coverage --testLocationInResults --json --outputFile=\"report.json\"",
         "lint": "npx eslint --fix-dry-run src && npx prettier --check --ignore-unknown src",
         "prepare": "husky install"
     },
