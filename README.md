@@ -1,4 +1,4 @@
-# travelord.ts
+# travelord
 
 Travelord is a simple library written in Typescript that provides functions for ranking points of interest along a path of travel.
 It offers both a library interface for programmatic use and a command-line interface (CLI) for easy integration into your projects.
