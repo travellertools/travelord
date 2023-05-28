@@ -58,6 +58,7 @@ jobs:
       - name: Coverage Report
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          github-token: \${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           threshold: 80
+          coverage-file: ./coverage.json
           skip-step: all
