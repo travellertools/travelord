@@ -20,6 +20,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "type": "commonjs",
+    "packageManager": "pnpm@latest",
     "scripts": {
         "build": "tsc",
         "start": "node dist/cli.js",
