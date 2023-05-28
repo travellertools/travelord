@@ -1,0 +1,70 @@
+{
+    "name": "travelord",
+    "version": "0.0.1",
+    "description": "CLI tool and library to rank points along a bearing line",
+    "keywords": [
+        "coordinate",
+        "ranking",
+        "sort",
+        "travel",
+        "route",
+        "cli",
+        "bearing"
+    ],
+    "author": "Dragos Rotaru <dragos@rotaru.co>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dragosrotaru/travelord.git"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "type": "commonjs",
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/cli.js",
+        "test": "jest",
+        "lint": "npx eslint && npx prettier --ignore-unknown"
+    },
+    "jest": {
+        "testEnvironment": "node",
+        "collectCoverage": true,
+        "transform": {
+            "^.+\\.tsx?$": "ts-jest"
+        },
+        "testPathIgnorePatterns": ["/node_modules/"]
+    },
+    "engines": {
+        "node": ">=14"
+    },
+    "bin": {
+        "travelord": "dist/cli.js"
+    },
+    "files": ["dist"],
+    "lint-staged": {
+        "src/*.{ts,tsx}": "npx eslint --fix && npx prettier -w --ignore-unknown"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run precommit"
+        }
+    },
+    "dependencies": {
+        "commander": "^10.0.1"
+    },
+    "devDependencies": {
+        "@types/jest": "^29.5.1",
+        "@types/node": "^20.2.5",
+        "@typescript-eslint/eslint-plugin": "^5.59.7",
+        "@typescript-eslint/parser": "^5.59.7",
+        "eslint": "^8.41.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-jest": "^27.2.1",
+        "husky": "^8.0.3",
+        "jest": "^29.5.0",
+        "lint-staged": "^13.2.2",
+        "prettier": "^2.8.8",
+        "ts-jest": "^29.1.0",
+        "typescript": "^5.0.4"
+    }
+}
