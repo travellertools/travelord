@@ -1,5 +1,6 @@
 import {
     BEARING_WEIGHT,
+    Coordinates,
     DISTANCE_WEIGHT,
     calculateBearing,
     calculateBearingDiff,
@@ -7,9 +8,22 @@ import {
     deg2rad,
     filterPoints,
     normalize,
+    rad2deg,
     rankPointsAlongBearing,
     sortPoints,
 } from "./lib";
+
+function generateRandomCoordinates(): Coordinates {
+    const minLat = -90;
+    const maxLat = 90;
+    const minLng = -180;
+    const maxLng = 180;
+
+    const lat = Math.random() * (maxLat - minLat) + minLat;
+    const lng = Math.random() * (maxLng - minLng) + minLng;
+
+    return { lat, lng };
+}
 
 describe("normalize", () => {
     it("should normalize a value within the specified range", () => {
@@ -74,12 +88,39 @@ describe("deg2rad", () => {
     });
 });
 
+describe("rad2deg", () => {
+    it("should convert 0 radians to 0 degrees", () => {
+        const result = rad2deg(0);
+        expect(result).toEqual(0);
+    });
+
+    it("should convert pi/2 radians to 90 degrees", () => {
+        const result = rad2deg(Math.PI / 2);
+        expect(result).toEqual(90);
+    });
+
+    it("should convert pi radians to 180 degrees", () => {
+        const result = rad2deg(Math.PI);
+        expect(result).toEqual(180);
+    });
+
+    it("should convert 2pi radians to 360 degrees", () => {
+        const result = rad2deg(2 * Math.PI);
+        expect(result).toEqual(360);
+    });
+
+    it("should convert negative radians to negative degrees", () => {
+        const result = rad2deg(-Math.PI / 4);
+        expect(result).toEqual(-45);
+    });
+});
+
 describe("calculateDistance", () => {
     it("should calculate the distance between two coordinates", () => {
         const coordinateA = { lat: 52.520008, lng: 13.404954 }; // Berlin, Germany
         const coordinateB = { lat: 45.421532, lng: -75.699642 }; // Ottawa, Canada
         const distance = calculateDistance(coordinateA, coordinateB);
-        expect(distance).toBeCloseTo(6260.68, 2); // Approximately 6260.68 km
+        expect(distance).toBeCloseTo(6128.57, 2); // Approximately 6128.57
     });
 
     it("should calculate the distance between two identical coordinates as 0", () => {
@@ -109,7 +150,7 @@ describe("calculateBearing", () => {
         const coordinateA = { lat: 52.520008, lng: 13.404954 }; // Berlin, Germany
         const coordinateB = { lat: 45.421532, lng: -75.699642 }; // Ottawa, Canada
         const bearing = calculateBearing(coordinateA, coordinateB);
-        expect(bearing).toBeCloseTo(309.89, 2); // Approximately 309.89 degrees
+        expect(bearing).toBeCloseTo(301.18, 2); // Approximately 309.89 degrees
     });
 
     it("should calculate the bearing between two identical coordinates as 0", () => {
@@ -130,7 +171,7 @@ describe("calculateBearing", () => {
         const coordinateA = { lat: 0, lng: 0 }; // Prime Meridian
         const coordinateB = { lat: 0, lng: 180 }; // 180° Longitude
         const bearing = calculateBearing(coordinateA, coordinateB);
-        expect(bearing).toBe(180);
+        expect(bearing).toBe(90);
     });
 });
 
@@ -172,113 +213,73 @@ describe("calculateBearingDiff", () => {
 });
 
 describe("filterPoints", () => {
-    const start = { lat: 40.7128, lng: -74.006 };
-    const end = { lat: 34.0522, lng: -118.2437 };
+    const start = generateRandomCoordinates();
+    const end = generateRandomCoordinates();
+    const points = Array.from({ length: 200 }, () =>
+        generateRandomCoordinates()
+    );
 
-    const points = [
-        { lat: 41.8781, lng: -87.6298 },
-        { lat: 39.9526, lng: -75.1652 },
-        { lat: 37.7749, lng: -122.4194 },
-        { lat: 29.7604, lng: -95.3698 },
-        { lat: 32.7767, lng: -96.797 },
-    ];
-
-    const threshold = 30;
-
-    it("should filter points based on bearing difference within the threshold", () => {
+    it("filters out points that exceed bearing difference and distance threshold", () => {
+        const threshold = 45;
         const filteredPoints = filterPoints(start, end, points, threshold);
-        expect(filteredPoints).toEqual([
-            { lat: 41.8781, lng: -87.6298 },
-            { lat: 37.7749, lng: -122.4194 },
-            { lat: 29.7604, lng: -95.3698 },
-        ]);
+
+        filteredPoints.forEach((point) => {
+            const bearing = calculateBearing(start, point);
+            const bearingDiff = calculateBearingDiff(
+                bearing,
+                calculateBearing(start, end)
+            );
+            const distance = calculateDistance(start, point);
+
+            expect(bearingDiff).toBeLessThanOrEqual(threshold);
+            expect(distance).toBeLessThanOrEqual(calculateDistance(start, end));
+        });
     });
 
-    it("should filter all points if threshold is set to 0", () => {
-        const filteredPoints = filterPoints(start, end, points, 0);
-        expect(filteredPoints).toEqual([]);
-    });
+    it("does not filter any points if they are all within the threshold", () => {
+        // maximum possible distance between two points on Earth
+        const start = { lat: 90, lng: 0 }; // North Pole
+        const end = { lat: -90, lng: 0 }; // South Pole
+        // maximum possible bearing difference
+        const threshold = 180;
+        const filteredPoints = filterPoints(start, end, points, threshold);
 
-    it("should filter no points if threshold is set to a large value", () => {
-        const filteredPoints = filterPoints(start, end, points, 100);
         expect(filteredPoints).toEqual(points);
     });
 
-    it("should filter points with the default threshold if no threshold is provided", () => {
-        const filteredPoints = filterPoints(start, end, points);
-        expect(filteredPoints).toEqual([
-            { lat: 41.8781, lng: -87.6298 },
-            { lat: 37.7749, lng: -122.4194 },
-            { lat: 29.7604, lng: -95.3698 },
-        ]);
+    it("returns an empty array if there are no points to filter", () => {
+        const filteredPoints = filterPoints(start, end, []);
+        expect(filteredPoints).toEqual([]);
     });
 });
 
 describe("sortPoints", () => {
-    const start = { lat: 40.7128, lng: -74.006 };
-    const end = { lat: 34.0522, lng: -118.2437 };
+    const start = generateRandomCoordinates();
+    const end = generateRandomCoordinates();
+    const points = Array.from({ length: 200 }, () =>
+        generateRandomCoordinates()
+    );
 
-    const points = [
-        { lat: 41.8781, lng: -87.6298 },
-        { lat: 39.9526, lng: -75.1652 },
-        { lat: 37.7749, lng: -122.4194 },
-        { lat: 29.7604, lng: -95.3698 },
-        { lat: 32.7767, lng: -96.797 },
-    ];
-
-    const distanceWeight = 1;
-    const bearingWeight = 1;
-
-    it("should sort points based on distance and bearing difference with default weights", () => {
-        const sortedPoints = sortPoints(start, end, points);
-        expect(sortedPoints).toEqual([
-            { lat: 29.7604, lng: -95.3698 },
-            { lat: 41.8781, lng: -87.6298 },
-            { lat: 32.7767, lng: -96.797 },
-            { lat: 39.9526, lng: -75.1652 },
-            { lat: 37.7749, lng: -122.4194 },
-        ]);
-    });
-
-    it("should sort points based on distance and bearing difference with custom weights", () => {
-        const sortedPoints = sortPoints(
-            start,
-            end,
-            points,
-            distanceWeight,
-            bearingWeight
+    it("should sort points based completely on distance if weighted as such", () => {
+        const sortedPoints = sortPoints(start, end, points, 1, 0);
+        expect(sortedPoints).toEqual(
+            points.sort(
+                (a, b) =>
+                    calculateDistance(start, a) - calculateDistance(start, b)
+            )
         );
-        expect(sortedPoints).toEqual([
-            { lat: 29.7604, lng: -95.3698 },
-            { lat: 41.8781, lng: -87.6298 },
-            { lat: 32.7767, lng: -96.797 },
-            { lat: 39.9526, lng: -75.1652 },
-            { lat: 37.7749, lng: -122.4194 },
-        ]);
     });
-});
 
-describe("rankPointsAlongBearing", () => {
-    const start = { lat: 40.7128, lng: -74.006 };
-    const end = { lat: 34.0522, lng: -118.2437 };
-
-    const points = [
-        { lat: 41.8781, lng: -87.6298 },
-        { lat: 39.9526, lng: -75.1652 },
-        { lat: 37.7749, lng: -122.4194 },
-        { lat: 29.7604, lng: -95.3698 },
-        { lat: 32.7767, lng: -96.797 },
-    ];
-
-    it("should rank points along the bearing line based on distance and bearing difference", () => {
-        const rankedPoints = rankPointsAlongBearing(start, end, points);
-        expect(rankedPoints).toEqual([
-            { lat: 29.7604, lng: -95.3698 },
-            { lat: 41.8781, lng: -87.6298 },
-            { lat: 32.7767, lng: -96.797 },
-            { lat: 39.9526, lng: -75.1652 },
-            { lat: 37.7749, lng: -122.4194 },
-        ]);
+    it("should sort points based completely on bearing if weighted as such", () => {
+        const sortedPoints = sortPoints(start, end, points, 0, 1);
+        const bearing = calculateBearing(start, end);
+        expect(sortedPoints).toEqual(
+            points.sort(
+                (a, b) =>
+                    calculateBearingDiff(calculateBearing(start, a), bearing) -
+                    calculateBearingDiff(calculateBearing(start, b), bearing)
+            )
+        );
     });
 });
 

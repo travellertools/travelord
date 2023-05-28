@@ -3,6 +3,7 @@
 import { program } from "commander";
 import fs from "fs";
 import path from "path";
+import { exit } from "process";
 import {
     BEARING_DIFF_THRESHOLD,
     BEARING_WEIGHT,
@@ -82,5 +83,7 @@ if (options["output"]) {
     console.log(`Sorted data written to ${outputFile}`);
 } else {
     // Output the sorted points to the console
-    console.log(rankedPoints);
+    console.log(JSON.stringify(rankedPoints));
 }
+
+exit(0);

@@ -1,13 +1,17 @@
 name: Main
 
-on: [push, pull_request]
-
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: ['*']
 permissions:
-  contents: read
-
+      checks: write
+      pull-requests: write
+      contents: write
 jobs:
   lint-test-build:
-    name: Test on node ${{ matrix.node-version }} and ${{ matrix.os }}
+    name: Lint, Build, Test and Coverage Report
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -46,8 +50,17 @@ jobs:
       - name: Lint Code
         run: pnpm run lint
 
-      - name: Run Tests
-        run: pnpm test
-
       - name: Build
         run: pnpm run build
+
+      - name: Run Tests
+        run: pnpm run test:ci
+      
+      - name: Coverage Report
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          threshold: 80
+          coverage-file: coverage.json
+          base-coverage-file: coverage.json
+          skip-step: all

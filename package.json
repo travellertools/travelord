@@ -25,16 +25,16 @@
         "build": "tsc",
         "start": "node dist/cli.js",
         "test": "jest",
+        "test:ci": "jest --silent --ci --coverage --testLocationInResults --json --outputFile=\"coverage.json\"",
         "lint": "npx eslint --fix-dry-run src && npx prettier --check --ignore-unknown src",
         "prepare": "husky install"
     },
     "jest": {
         "testEnvironment": "node",
-        "collectCoverage": true,
         "transform": {
             "^.+\\.tsx?$": "ts-jest"
         },
-        "testPathIgnorePatterns": ["/node_modules/"]
+        "testPathIgnorePatterns": ["/node_modules/", "/dist/"]
     },
     "engines": {
         "node": ">=14"

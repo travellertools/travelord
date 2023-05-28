@@ -30,7 +30,7 @@ To install Travelord, use pnpm, npm or yarn:
 
 ## CLI Usage
 
-`travelord --start 45.655651,25.6108 --end 52.520008,13.404954 --input data.json --output output.json`
+`travelord --input data.json --output output.json`
 
 CLI Options
 
@@ -46,7 +46,7 @@ Use `travelord --help` to get a full description
 Here's an example of how to use My Package in your JavaScript/TypeScript code:
 
 ```javascript
-import { rankPointsAlongBearing } from 'travelord';
+import { rankPointsAlongBearing } from "travelord";
 
 // Define your start and end coordinates
 const start = { lat: 0, lng: 0 };
@@ -71,14 +71,15 @@ Contributions are welcome! Please feel free to submit a PR or message me if you 
 
 ## Possible improvements
 
+-   fix lint precommit hook
+-   implement automated tagged releases and publish to npm
+
 -   use a dictionary of coordinates and/or google api to accept city names instead of coordinates
 -   improve the ranking algorithm or give it more options
 -   add support for an iterative ranking process
--   add examples
--   add ci/cd
--   add csv support
--   publish to npm
 -   validate the CLI input data
+-   add csv support
+-   add examples in docs
 
 ## License
 

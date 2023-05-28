@@ -27,6 +27,13 @@ export const normalize =
 export const deg2rad = (deg: number): number => deg * (Math.PI / 180);
 
 /**
+ * Converts radians to degrees.
+ * @param {number} rad - The value in radians.
+ * @returns {number} - The value in degrees.
+ */
+export const rad2deg = (rad: number) => (rad * 180) / Math.PI;
+
+/**
  * Calculates the distance between two coordinates on Earth.
  * @param {Coordinates} A - first coordinate.
  * @param {Coordinates} B - second coordinate.
@@ -54,13 +61,18 @@ export const calculateDistance = (A: Coordinates, B: Coordinates): number => {
  * @returns {number} - The bearing between the coordinates in degrees.
  */
 export const calculateBearing = (A: Coordinates, B: Coordinates): number => {
-    const dLng = deg2rad(B.lng - A.lng);
-    const y = Math.sin(dLng) * Math.cos(deg2rad(B.lat));
+    const Δλ = deg2rad(B.lng - A.lng);
+    const φA = deg2rad(A.lat);
+    const φB = deg2rad(B.lat);
+    const y = Math.sin(Δλ) * Math.cos(φB);
     const x =
-        Math.cos(deg2rad(A.lat)) * Math.sin(deg2rad(B.lat)) -
-        Math.sin(deg2rad(A.lat)) * Math.cos(deg2rad(B.lat)) * Math.cos(dLng);
-    const bearing = (Math.atan2(y, x) * 180) / Math.PI;
-    return (bearing + 360) % 360;
+        Math.cos(φA) * Math.sin(φB) -
+        Math.sin(φA) * Math.cos(φB) * Math.cos(Δλ);
+    const bearingRad = Math.atan2(y, x);
+    const bearingDeg = rad2deg(bearingRad);
+
+    // normalize to 0°..360°
+    return (bearingDeg + 360) % 360;
 };
 
 /**
@@ -74,11 +86,14 @@ export const calculateBearingDiff = (
     bearingB: number
 ): number => {
     const diff = Math.abs(bearingA - bearingB);
+    // If the difference is greater than 180°, the smaller angle is 360° - diff
     return diff > 180 ? 360 - diff : diff;
 };
 
 /**
- * Filters an array of coordinates based on their bearing difference with the line formed by the start and end coordinates.
+ * Filters an array of coordinates if the bearing difference and distance from start are within a threshold.
+ * The bearing difference is calculated between the bearing of the travel path and the bearing of the point.
+ * If the distance between start and point is greater than the distance between start and end, the point is filtered out.
  * @param {Coordinates} start - The start coordinate.
  * @param {Coordinates} end - The end coordinate.
  * @param {Coordinates[]} points - The array of coordinates to filter.
@@ -92,10 +107,12 @@ export const filterPoints = (
     threshold = BEARING_DIFF_THRESHOLD
 ): Coordinates[] => {
     const travelBearing = calculateBearing(start, end);
+    const travelDistance = calculateDistance(start, end);
     return points.filter((point) => {
         const bearing = calculateBearing(start, point);
         const bearingDiff = calculateBearingDiff(bearing, travelBearing);
-        return bearingDiff <= threshold;
+        const distance = calculateDistance(start, point);
+        return bearingDiff <= threshold && distance <= travelDistance;
     });
 };
 
