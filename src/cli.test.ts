@@ -4,7 +4,6 @@ import path from 'path';
 
 describe('CLI', () => {
     const inputFilePath = path.resolve(__dirname, 'input.json');
-    const outputFilePath = path.resolve(__dirname, 'output.json');
 
     beforeAll(() => {
         // Create a sample input file
@@ -21,7 +20,6 @@ describe('CLI', () => {
     afterAll(() => {
         // Clean up the created files
         fs.unlinkSync(inputFilePath);
-        fs.unlinkSync(outputFilePath);
     });
 
     it('should rank points along a bearing line and output the sorted data', () => {
@@ -47,17 +45,12 @@ describe('CLI', () => {
                 bearingWeight,
                 '-t',
                 threshold,
-                '-o',
-                outputFilePath,
             ],
             { encoding: 'utf-8' }
         );
 
         // Verify the output
-        const outputData = JSON.parse(fs.readFileSync(outputFilePath, 'utf-8'));
+        const outputData = JSON.parse(result.stdout);
         expect(outputData.points).toHaveLength(3); // Verify the number of sorted points
-
-        // Clean up the output file
-        fs.unlinkSync(outputFilePath);
     });
 });

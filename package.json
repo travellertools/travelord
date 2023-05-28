@@ -24,7 +24,8 @@
         "build": "tsc",
         "start": "node dist/cli.js",
         "test": "jest",
-        "lint": "npx eslint && npx prettier --ignore-unknown"
+        "lint": "npx eslint --fix-dry-run src && npx prettier --check --ignore-unknown src",
+        "prepare": "husky install"
     },
     "jest": {
         "testEnvironment": "node",
@@ -42,7 +43,8 @@
     },
     "files": ["dist"],
     "lint-staged": {
-        "src/*.{ts,tsx}": "npx eslint --fix && npx prettier -w --ignore-unknown"
+        "src/*.{ts}": "npx eslint --fix && npm run build",
+        "src/*.{ts,json,md}": "npx prettier -w --ignore-unknown"
     },
     "husky": {
         "hooks": {
