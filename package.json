@@ -44,7 +44,7 @@
     "files": ["dist"],
     "lint-staged": {
         "src/*.{ts}": "npx eslint --fix && npm run build",
-        "src/*.{ts,json,md}": "npx prettier -w --ignore-unknown"
+        "*.{ts,json,md}": "npx prettier -w --ignore-unknown"
     },
     "husky": {
         "hooks": {
