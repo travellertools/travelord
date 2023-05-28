@@ -1,7 +1,7 @@
 name: Main
 
 on:
-  pull_request_target:
+  pull_request:
     branches:
       - main
   push:
@@ -60,6 +60,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           threshold: 80
-          package-manager: pnpm
+          package-manager: pnpmss
           coverage-file: ./coverage.json
           skip-step: all
