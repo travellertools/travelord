@@ -1,6 +1,6 @@
 export const BEARING_DIFF_THRESHOLD = 45; // Adjust the bearing difference threshold as per your preference
-export const DISTANCE_WEIGHT = 0.6; // Weight for distance from Start
-export const BEARING_WEIGHT = 0.4; // Weight for bearing difference
+export const DISTANCE_WEIGHT = 0.8; // Weight for distance from Start
+export const BEARING_WEIGHT = 0.2; // Weight for bearing difference
 
 export interface Coordinates {
     lat: number;
@@ -149,8 +149,8 @@ export const calculateMinMaxValues = (
  * @param {Coordinates} start - The start coordinate.
  * @param {Coordinates} end - The end coordinate.
  * @param {Coordinates[]} points - The array of coordinates to sort.
- * @param {number} distanceWeight - The weight for distance calculation (default: 0.6).
- * @param {number} bearingWeight - The weight for bearing difference calculation (default: 0.4).
+ * @param {number} distanceWeight - The weight for distance calculation (default: 0.8).
+ * @param {number} bearingWeight - The weight for bearing difference calculation (default: 0.2).
  * @returns {Coordinates[]} - The sorted array of coordinates.
  */
 export const sortPoints = (
@@ -188,8 +188,8 @@ export const sortPoints = (
  * @param {Coordinates} start - The start coordinate.
  * @param {Coordinates} end - The end coordinate.
  * @param {Coordinates[]} points - The array of coordinates to sort.
- * @param {number} distanceWeight - The weight for distance calculation (default: 0.6).
- * @param {number} bearingWeight - The weight for bearing difference calculation (default: 0.4).
+ * @param {number} distanceWeight - The weight for distance calculation (default: 0.8).
+ * @param {number} bearingWeight - The weight for bearing difference calculation (default: 0.2).
  * @param {number} threshold - The bearing difference threshold.(default: 45)
  * @returns {Coordinates[]} - The sorted array of coordinates.
  */

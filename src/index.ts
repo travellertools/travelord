@@ -9,7 +9,7 @@ import {
     normalize,
     rankPointsAlongBearing,
     sortPoints,
-} from './lib';
+} from "./lib";
 
 export {
     Coordinates,

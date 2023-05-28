@@ -1,9 +1,9 @@
-import { spawnSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+import { spawnSync } from "child_process";
+import fs from "fs";
+import path from "path";
 
-describe('CLI', () => {
-    const inputFilePath = path.resolve(__dirname, 'input.json');
+describe("CLI", () => {
+    const inputFilePath = path.resolve(__dirname, "input.json");
 
     beforeAll(() => {
         // Create a sample input file
@@ -22,31 +22,31 @@ describe('CLI', () => {
         fs.unlinkSync(inputFilePath);
     });
 
-    it('should rank points along a bearing line and output the sorted data', () => {
-        const start = '10,20';
-        const end = '50,60';
-        const distanceWeight = '0.6';
-        const bearingWeight = '0.4';
-        const threshold = '45';
+    it("should rank points along a bearing line and output the sorted data", () => {
+        const start = "10,20";
+        const end = "50,60";
+        const distanceWeight = "0.6";
+        const bearingWeight = "0.4";
+        const threshold = "45";
 
         const result = spawnSync(
-            'node',
+            "node",
             [
-                './cli.js',
-                '-i',
+                "./cli.js",
+                "-i",
                 inputFilePath,
-                '-s',
+                "-s",
                 start,
-                '-e',
+                "-e",
                 end,
-                '-dw',
+                "-dw",
                 distanceWeight,
-                '-bw',
+                "-bw",
                 bearingWeight,
-                '-t',
+                "-t",
                 threshold,
             ],
-            { encoding: 'utf-8' }
+            { encoding: "utf-8" }
         );
 
         // Verify the output
