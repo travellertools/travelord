@@ -34,7 +34,7 @@
         "transform": {
             "^.+\\.tsx?$": "ts-jest"
         },
-        "testPathIgnorePatterns": ["/node_modules/"]
+        "testPathIgnorePatterns": ["/node_modules/", "/dist/"]
     },
     "engines": {
         "node": ">=14"

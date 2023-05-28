@@ -3,17 +3,15 @@ import fs from "fs";
 import path from "path";
 
 describe("CLI", () => {
-    const inputFilePath = path.resolve(__dirname, "input.json");
+    const inputFilePath = path.resolve(__dirname, "..", "test/input.json");
 
     beforeAll(() => {
         // Create a sample input file
-        const inputData = {
-            points: [
-                { lat: 10, lng: 20 },
-                { lat: 30, lng: 40 },
-                { lat: 50, lng: 60 },
-            ],
-        };
+        const inputData = [
+            { lat: 10, lng: 20 },
+            { lat: 30, lng: 40 },
+            { lat: 50, lng: 60 },
+        ];
         fs.writeFileSync(inputFilePath, JSON.stringify(inputData, null, 2));
     });
 
@@ -32,7 +30,7 @@ describe("CLI", () => {
         const result = spawnSync(
             "node",
             [
-                "./cli.js",
+                "./dist/cli.js",
                 "-i",
                 inputFilePath,
                 "-s",
@@ -51,6 +49,12 @@ describe("CLI", () => {
 
         // Verify the output
         const outputData = JSON.parse(result.stdout);
-        expect(outputData.points).toHaveLength(3); // Verify the number of sorted points
+        const length = outputData.length;
+        const isArray = Array.isArray(outputData);
+        const exitCode = result.status;
+
+        expect(length).toBe(3);
+        expect(isArray).toBe(true);
+        expect(exitCode).toBe(0);
     });
 });

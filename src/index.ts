@@ -7,6 +7,7 @@ import {
     deg2rad,
     filterPoints,
     normalize,
+    rad2deg,
     rankPointsAlongBearing,
     sortPoints,
 } from "./lib";
@@ -19,6 +20,7 @@ export {
     calculateDistance,
     calculateMinMaxValues,
     deg2rad,
+    rad2deg,
     filterPoints,
     sortPoints,
     rankPointsAlongBearing,
