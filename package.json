@@ -1,7 +1,7 @@
 {
     "name": "travelord",
-    "version": "0.0.2",
-    "description": "CLI tool and library to rank points along a bearing line",
+    "version": "0.0.1",
+    "description": "CLI tool and typescript library for ranking points of interest along a path of travel",
     "keywords": [
         "coordinate",
         "ranking",
@@ -17,6 +17,10 @@
         "type": "git",
         "url": "https://github.com/dragosrotaru/travelord.git"
     },
+    "bugs": {
+        "url": "https://github.com/dragosrotaru/travelord/issues"
+    },
+    "homepage": "https://github.com/dragosrotaru/travelord#readme",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "type": "commonjs",
@@ -49,7 +53,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "nt"
+            "pre-commit": "lint-staged"
         }
     },
     "dependencies": {
