@@ -71,8 +71,6 @@ Contributions are welcome! Please feel free to submit a PR or message me if you 
 
 ## Possible improvements
 
--   fix failing tests
--   make the ci/cd work only on pull requests and on main branch
 -   implement automated tagged releases and publish to npm
 -   add support for coverage reports
 

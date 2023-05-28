@@ -51,6 +51,10 @@ jobs:
 
       - name: Run Tests
         run: pnpm test
+      
+      - name: Coverage Report
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        
 
       - name: Build
         run: pnpm run build
