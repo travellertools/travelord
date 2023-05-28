@@ -69,6 +69,14 @@ console.log(rankedPoints);
 
 Contributions are welcome! Please feel free to submit a PR or message me if you need help
 
+## Publish Workflow
+
+-   bump versions in package.json and in cli.ts
+-   add to CHANGELOG
+-   push to master
+-   create a tag and release in github
+-   the publish workflow will then publish to npm
+
 ## Possible improvements
 
 -   fix lint precommit hook

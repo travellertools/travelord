@@ -10,7 +10,7 @@ permissions:
       pull-requests: write
       contents: write
 jobs:
-  lint-test-build:
+  Main:
     name: Lint, Build, Test and Coverage Report
     runs-on: ${{ matrix.os }}
     strategy:
