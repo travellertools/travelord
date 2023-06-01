@@ -76,11 +76,9 @@ const rankedPoints = rankPointsAlongBearing(
 // Write the sorted points to the output file if specified
 if (options["output"]) {
     const outputFile = path.resolve(options["output"]);
-    fs.writeFileSync(
-        outputFile,
-        JSON.stringify({ points: rankedPoints }, null, 2)
-    );
-    console.log(`Sorted data written to ${outputFile}`);
+    fs.writeFileSync(outputFile, JSON.stringify(rankedPoints, null, 2));
+    console.log(`data written to ${outputFile}`);
+    console.log(`length was ${points.length}, now is ${rankedPoints.length}`);
 } else {
     // Output the sorted points to the console
     console.log(JSON.stringify(rankedPoints));
