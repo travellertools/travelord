@@ -1,6 +1,6 @@
 {
     "name": "travelord",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "CLI tool and typescript library for ranking points of interest along a path of travel",
     "keywords": [
         "coordinate",

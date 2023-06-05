@@ -14,7 +14,7 @@ import {
 
 program
     .name("travelord")
-    .version("0.1.0")
+    .version("0.1.1")
     .description("CLI tool to rank points along a bearing line")
     .requiredOption(
         "-i, --input <file>",
